@@ -18,7 +18,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         dup_object = bpy.context.active_object
         
-        bpy.context.view_layer.objects.active = dup_object
+        bpy.ops.object.select_all(action='DESELECT')
+        dup_object.select_set(True)
         
         bpy.ops.object.convert(target='MESH')
         
@@ -27,6 +28,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         # set active object to origin object
         bpy.context.view_layer.objects.active = origin_object
+        bpy.ops.object.select_all(action='DESELECT')
+        origin_object.select_set(True)
 
         
         bpy.ops.object.modifier_add(type='SURFACE_DEFORM')
@@ -35,6 +38,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         # set active object to dup object
         bpy.context.view_layer.objects.active = dup_object
+        bpy.ops.object.select_all(action='DESELECT')
+        dup_object.select_set(True)
         
         bpy.ops.object.modifier_add(type='REMESH')
         # set voxel size
@@ -44,6 +49,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         bpy.ops.object.modifier_apply(modifier="Remesh")
         
         bpy.context.view_layer.objects.active = origin_object
+        bpy.ops.object.select_all(action='DESELECT')
+        origin_object.select_set(True)
         
         # bind surface deform
         bpy.ops.object.surfacedeform_bind(modifier="SurfaceDeform")
@@ -51,6 +58,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         # hide origin object
         origin_object.hide_viewport = True
         
-        bpy.ops.object.convert(target='MESH')
+        bpy.context.view_layer.objects.active = dup_object
+        bpy.ops.object.select_all(action='DESELECT')
+        dup_object.select_set(True)
 
         return {'FINISHED'}

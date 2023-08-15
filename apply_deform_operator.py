@@ -25,12 +25,22 @@ class OT_LWI_ApplyDeformOperator(Operator):
         
         # set original object as active object
         bpy.context.view_layer.objects.active = original_object
+        bpy.ops.object.select_all(action='DESELECT')
+        original_object.select_set(True)
         
         # apply surface defrom
         bpy.ops.object.modifier_apply(modifier="SurfaceDeform")
         
+        
+        bpy.ops.object.select_all(action='DESELECT')
+        proxy_object.select_set(True)
+        
         # delete proxy object
         bpy.ops.object.delete()
+        
+        bpy.context.view_layer.objects.active = original_object
+        bpy.ops.object.select_all(action='DESELECT')
+        original_object.select_set(True)
         
 
         return {'FINISHED'}
