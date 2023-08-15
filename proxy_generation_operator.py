@@ -18,6 +18,10 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         dup_object = bpy.context.active_object
         
+        bpy.context.view_layer.objects.active = dup_object
+        
+        bpy.ops.object.convert(target='MESH')
+        
         # rename object
         dup_object.name = origin_object.name + "_PROXY"
         

@@ -11,6 +11,8 @@ class OT_LWI_ApplyDeformOperator(Operator):
         # Get selected object
         proxy_object = bpy.context.active_object
         
+        # convert mesh
+        bpy.ops.object.convert(target='MESH')
         
         # original name of the object
         original_name = proxy_object.name.replace("_PROXY", "")
