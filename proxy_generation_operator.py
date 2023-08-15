@@ -50,5 +50,7 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         # hide origin object
         origin_object.hide_viewport = True
+        
+        bpy.ops.object.convert(target='MESH')
 
         return {'FINISHED'}
