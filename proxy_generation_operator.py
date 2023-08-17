@@ -69,7 +69,7 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         
         ##### END MODIFIER #####
         
-        self.apply_deform()
+        self.apply_deform(context)
 
         return {'FINISHED'}
     
@@ -85,7 +85,16 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         #return {'PASS_THROUGH'}
         
     
-    def apply_deform(self):
+    def apply_deform(self, context):
+        prop_group = context.scene.lwi_proxy_generation
+        
+        if prop_group.add_subdivision:
+            bpy.context.view_layer.objects.active = self.dup_object
+            bpy.ops.object.select_all(action='DESELECT')
+            self.dup_object.select_set(True)
+            # add subdivision modifier
+            bpy.ops.object.modifier_add(type='SUBSURF')
+        
         bpy.context.view_layer.objects.active = self.origin_object
         bpy.ops.object.select_all(action='DESELECT')
         self.origin_object.select_set(True)
@@ -125,7 +134,7 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         self.dup_object.name = self.proxy_name
         
         
-        self.apply_deform()
+        self.apply_deform(context)
         
         wm = context.window_manager  
         if self.timer != None:

@@ -23,6 +23,9 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
         md = layout.row()
         md.prop(prop_group, "mode", expand=True)
         
+        sub = layout.row()
+        sub.prop(prop_group, "add_subdivision")
+        
         if prop_group.mode == "MODIFIER":
             row0 = layout.row()
             fo = row0.column()
