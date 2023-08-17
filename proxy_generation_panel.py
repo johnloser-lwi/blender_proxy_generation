@@ -19,13 +19,18 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
         creation = layout.row()
         title = layout.label(text="Generate Proxy")
         
-        row0 = layout.row()
-        fo = row0.column()
-        fo.prop(prop_group, "falloff", slider=True)
         
-        row1 = layout.row()
-        vs = row1.column()
-        vs.prop(prop_group, "voxel_size", slider=True)
+        md = layout.row()
+        md.prop(prop_group, "mode", expand=True)
+        
+        if prop_group.mode == "MODIFIER":
+            row0 = layout.row()
+            fo = row0.column()
+            fo.prop(prop_group, "falloff", slider=True)
+            
+            row1 = layout.row()
+            vs = row1.column()
+            vs.prop(prop_group, "voxel_size", slider=True)
         
         row2 = layout.row()
         gp = row2.column()
