@@ -63,7 +63,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
             
         elif prop_group.mode == "MODIFIER":
             
-            bpy.ops.object.modifier_add(type='REMESH')
+            if not "Remesh" in bpy.context.object.modifiers :
+                bpy.ops.object.modifier_add(type='REMESH')
             # set voxel size
             bpy.context.object.modifiers["Remesh"].voxel_size = prop_group.voxel_size
             
@@ -85,7 +86,6 @@ class OT_LWI_ProxyGenerationOperator(Operator):
                 return self.on_qremesh_finished(context)
             
         return {'RUNNING_MODAL'}
-        #return {'PASS_THROUGH'}
         
     
     def apply_deform(self, context):
@@ -96,25 +96,22 @@ class OT_LWI_ProxyGenerationOperator(Operator):
             bpy.ops.object.select_all(action='DESELECT')
             self.dup_object.select_set(True)
             # add subdivision modifier
-            bpy.ops.object.modifier_add(type='SUBSURF')
+            if not "Subdivision" in bpy.context.object.modifiers :
+                bpy.ops.object.modifier_add(type='SUBSURF')
         
         bpy.context.view_layer.objects.active = self.origin_object
         bpy.ops.object.select_all(action='DESELECT')
         self.origin_object.select_set(True)
         
-        bpy.ops.object.modifier_add(type='SURFACE_DEFORM')
+        if not "SurfaceDeform" in bpy.context.object.modifiers : bpy.ops.object.modifier_add(type='SURFACE_DEFORM')
         bpy.context.object.modifiers["SurfaceDeform"].falloff = prop_group.falloff
         bpy.context.object.modifiers["SurfaceDeform"].target = self.dup_object
         
         # bind surface deform
-        result = bpy.ops.object.surfacedeform_bind(modifier="SurfaceDeform")
+        bpy.ops.object.surfacedeform_bind(modifier="SurfaceDeform")
         
         # if binding failed, delete proxy object and cancel
-        if result != {'FINISHED'}:
-            bpy.ops.object.select_all(action='DESELECT')
-            bpy.data.context.objects.remove(self.dup_object, do_unlink=True)
-            # remove surface deform modifier
-            bpy.ops.object.modifier_remove(modifier="SurfaceDeform")
+        if not self.origin_object.modifiers["SurfaceDeform"].is_bound:
             return {'CANCELLED'}
         
         # hide origin object
@@ -132,6 +129,8 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         prop_group.origin_object = self.origin_object
             
         prop_group.state = "PROXY";
+        
+        return {'FINISHED'}
     
     def on_qremesh_finished(self, context):
         wm = context.window_manager  
@@ -167,6 +166,10 @@ class OT_LWI_ApplyDeformOperator(Operator):
     bl_label = "Apply Deform"
     
     def execute(self, context):
+        # if object is in edit mode, switch to object mode
+        if bpy.context.object.mode == 'EDIT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+        
         prop_group = context.scene.lwi_proxy_generation
         
         # Get selected object
@@ -178,9 +181,7 @@ class OT_LWI_ApplyDeformOperator(Operator):
         bpy.ops.object.select_all(action='DESELECT')
         proxy_object.select_set(True)
         
-        # if object is in edit mode, switch to object mode
-        if bpy.context.object.mode == 'EDIT':
-            bpy.ops.object.mode_set(mode='OBJECT')
+
         
         # if object has subdivision modifier, enable it
         if "Subdivision" in bpy.context.object.modifiers:
@@ -229,6 +230,10 @@ class OT_LWI_TogglePreviewOperator(Operator):
     bl_label = "Toggle Preview"
     
     def execute(self, context):
+        # if object is in edit mode, switch to object mode
+        if bpy.context.object.mode == 'EDIT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+        
         prop_group = context.scene.lwi_proxy_generation
         
         if prop_group.state == "IDLE":
