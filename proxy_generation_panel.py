@@ -20,28 +20,34 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
         title = layout.label(text="Generate Proxy")
         
         
-        md = layout.row()
-        md.prop(prop_group, "mode", expand=True)
         
-        sub = layout.row()
-        sub.prop(prop_group, "add_subdivision")
         
-        row0 = layout.row()
-        fo = row0.column()
-        fo.prop(prop_group, "falloff", slider=True)
+        if prop_group.state == "IDLE":
+            md = layout.row()
+            md.prop(prop_group, "mode", expand=True)
+            
+            sub = layout.row()
+            sub.prop(prop_group, "add_subdivision")
+            
+            row0 = layout.row()
+            fo = row0.column()
+            fo.prop(prop_group, "falloff", slider=True)
+            
+            if prop_group.mode == "MODIFIER":
+                row1 = layout.row()
+                vs = row1.column()
+                vs.prop(prop_group, "voxel_size", slider=True)
+            
+            gp = layout.row()
+            gp.operator("lwi.generate_proxy", text="Generate Proxy")
         
-        if prop_group.mode == "MODIFIER":
-            row1 = layout.row()
-            vs = row1.column()
-            vs.prop(prop_group, "voxel_size", slider=True)
-        
-        row2 = layout.row()
-        gp = row2.column()
-        operator_props = gp.operator("lwi.generate_proxy", text="Generate Proxy")
-        
-        row3 = layout.row()
-        ad = row3.column()
-        ad.operator("lwi.apply_deform", text="Apply Deform")
+        if prop_group.state != "IDLE":
+            toggle_text = "Disable Preview" if prop_group.state == "PREVIEW" else "Enable Preview"
+            pv = layout.row()
+            pv.operator("lwi.toggle_proxy", text=toggle_text)
+            
+            ad = layout.row()
+            ad.operator("lwi.apply_deform", text="Apply Deform")
         
 
         

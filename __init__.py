@@ -30,6 +30,7 @@ from . proxy_generation_property_group import *
 classes = {
         OT_LWI_ProxyGenerationOperator, 
         OT_LWI_ApplyDeformOperator, 
+        OT_LWI_TogglePreviewOperator,
         OBJECT_PT_LWI_ProxyGenerationPanel, 
         ProxyGenerationPropertyGroup
     }
