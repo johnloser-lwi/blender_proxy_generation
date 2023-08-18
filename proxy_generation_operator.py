@@ -6,6 +6,7 @@ class OT_LWI_ProxyGenerationOperator(Operator):
     
     bl_idname = "lwi.generate_proxy"
     bl_label = "Generate Proxy"
+    bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
         if bpy.context.object.mode == 'EDIT':
@@ -164,6 +165,7 @@ class OT_LWI_ApplyDeformOperator(Operator):
     
     bl_idname = "lwi.apply_deform"
     bl_label = "Apply Deform"
+    bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
         # if object is in edit mode, switch to object mode
@@ -228,6 +230,7 @@ class OT_LWI_ApplyDeformOperator(Operator):
 class OT_LWI_TogglePreviewOperator(Operator):
     bl_idname = "lwi.toggle_proxy"
     bl_label = "Toggle Preview"
+    bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
         # if object is in edit mode, switch to object mode
