@@ -8,5 +8,7 @@ class ProxyGenerationPropertyGroup(bpy.types.PropertyGroup):
     
     state : bpy.props.EnumProperty(name="State", items=[("IDLE", "Idle", ""), ("PROXY", "Proxy", ""), ("PREVIEW", "Preview", "")], default="IDLE")
     
+    remove_proxy : bpy.props.BoolProperty(name="Remove Proxy", default=False)
+    
     origin_object : bpy.props.PointerProperty(type=bpy.types.Object)
     proxy_object : bpy.props.PointerProperty(type=bpy.types.Object)
