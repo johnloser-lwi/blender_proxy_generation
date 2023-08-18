@@ -105,11 +105,15 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         bpy.ops.object.surfacedeform_bind(modifier="SurfaceDeform")
         
         # hide origin object
-        self.origin_object.hide_viewport = True
+        self.origin_object.hide_set(True)
         
         bpy.context.view_layer.objects.active = self.dup_object
         bpy.ops.object.select_all(action='DESELECT')
         self.dup_object.select_set(True)
+        
+        # disable subdivision modifier
+        if prop_group.add_subdivision:
+            bpy.context.object.modifiers["Subdivision"].show_viewport = False
     
     def on_qremesh_finished(self, context):
         print("on_qremesh_finished")

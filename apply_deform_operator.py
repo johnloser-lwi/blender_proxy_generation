@@ -10,9 +10,16 @@ class OT_LWI_ApplyDeformOperator(Operator):
 
         # Get selected object
         proxy_object = bpy.context.active_object
+        bpy.ops.object.select_all(action='DESELECT')
+        proxy_object.select_set(True)
         
-        # convert mesh
-        bpy.ops.object.convert(target='MESH')
+        # if object is in edit mode, switch to object mode
+        if bpy.context.object.mode == 'EDIT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+        
+        # find all modifier and apply them
+        for modifier in proxy_object.modifiers:
+            bpy.ops.object.modifier_apply(modifier=modifier.name)
         
         # original name of the object
         original_name = proxy_object.name.replace("_PROXY", "")
@@ -21,7 +28,7 @@ class OT_LWI_ApplyDeformOperator(Operator):
         original_object = bpy.data.objects[original_name]
         
         # unhide original object
-        original_object.hide_viewport = False
+        original_object.hide_set(False)
         
         # set original object as active object
         bpy.context.view_layer.objects.active = original_object
