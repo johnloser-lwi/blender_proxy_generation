@@ -26,11 +26,11 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
         sub = layout.row()
         sub.prop(prop_group, "add_subdivision")
         
+        row0 = layout.row()
+        fo = row0.column()
+        fo.prop(prop_group, "falloff", slider=True)
+        
         if prop_group.mode == "MODIFIER":
-            row0 = layout.row()
-            fo = row0.column()
-            fo.prop(prop_group, "falloff", slider=True)
-            
             row1 = layout.row()
             vs = row1.column()
             vs.prop(prop_group, "voxel_size", slider=True)
