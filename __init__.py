@@ -23,12 +23,17 @@ bl_info = {
 }
 
 import bpy
-from . proxy_generation_operator import OT_LWI_ProxyGenerationOperator
-from . proxy_generation_panel import OBJECT_PT_LWI_ProxyGenerationPanel
-from . proxy_generation_property_group import ProxyGenerationPropertyGroup
-from . apply_deform_operator import OT_LWI_ApplyDeformOperator
+from . proxy_generation_operator import *
+from . proxy_generation_panel import *
+from . proxy_generation_property_group import *
 
-classes = {OT_LWI_ProxyGenerationOperator, OT_LWI_ApplyDeformOperator, OBJECT_PT_LWI_ProxyGenerationPanel, ProxyGenerationPropertyGroup}
+classes = {
+        OT_LWI_ProxyGenerationOperator, 
+        OT_LWI_ApplyDeformOperator, 
+        OT_LWI_TogglePreviewOperator,
+        OBJECT_PT_LWI_ProxyGenerationPanel, 
+        ProxyGenerationPropertyGroup
+    }
 
 def register():
     for c in classes:
