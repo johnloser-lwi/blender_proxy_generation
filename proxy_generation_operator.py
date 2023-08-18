@@ -19,6 +19,11 @@ class OT_LWI_ProxyGenerationOperator(Operator):
         # Get selected object
         self.origin_object = bpy.context.active_object
 
+        if prop_group.proxy_object != None:
+            prop_group.proxy_object.hide_set(False)
+            self.dup_object = prop_group.proxy_object
+            return self.apply_deform(context)
+
         # copy object
         bpy.ops.object.duplicate()
         
@@ -203,13 +208,19 @@ class OT_LWI_ApplyDeformOperator(Operator):
         proxy_object.select_set(True)
         
         # delete proxy object
-        bpy.ops.object.delete()
+        if prop_group.remove_proxy : bpy.ops.object.delete()
         
         bpy.context.view_layer.objects.active = original_object
         bpy.ops.object.select_all(action='DESELECT')
         original_object.select_set(True)
         
         prop_group.state = "IDLE";
+        
+        prop_group.origin_object = None
+        if prop_group.remove_proxy : prop_group.proxy_object = None
+        else : 
+            # hide 
+            prop_group.proxy_object.hide_set(True)
         
         return {'FINISHED'}
     

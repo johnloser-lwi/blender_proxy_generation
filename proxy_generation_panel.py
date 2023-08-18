@@ -19,7 +19,15 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
         creation = layout.row()
         title = layout.label(text="Generate Proxy")
         
+        if prop_group.origin_object != None:
+            og = layout.row()
+            og.label(text="Origin Object : " + prop_group.origin_object.name)
         
+        px = layout.row()
+        if prop_group.state == "IDLE":
+            px.prop(prop_group, "proxy_object")
+        elif prop_group.proxy_object != None:
+            px.label(text="Proxy Object : " + prop_group.proxy_object.name)
         
         
         if prop_group.state == "IDLE":
@@ -47,7 +55,10 @@ class OBJECT_PT_LWI_ProxyGenerationPanel(Panel):
             pv.operator("lwi.toggle_proxy", text=toggle_text)
             
             ad = layout.row()
-            ad.operator("lwi.apply_deform", text="Apply Deform")
+            rm = ad.column()
+            rm.prop(prop_group, "remove_proxy")
+            bt = ad.column()
+            bt.operator("lwi.apply_deform", text="Apply Deform")
         
 
         
